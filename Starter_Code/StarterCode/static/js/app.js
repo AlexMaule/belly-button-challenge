@@ -6,7 +6,7 @@ let samples;
 d3.json(url).then(function(data) {
 
     samples = data.samples;
-    console.log("samples: ",samples);
+    console.log("data: ",data);
 
     // d3.selectAll("#selDataset").on("change",getData);
 
@@ -49,7 +49,8 @@ d3.json(url).then(function(data) {
                 opacity: 0.75,
                 size: sample_values,
                 color: otu_ids,
-                sizeref: 1.3
+                colorscale: "Earth",
+                sizeref: 1.32
             }
         }];
 
@@ -85,8 +86,19 @@ function optionChanged(id) {
         }
     };
 
-    console.log(selected_id);
+    // Updating the Bar Chart
 
+    updateBarChart(selected_id);
+
+    // Updating the Bubble Chart
+
+    updateBubbleChart(selected_id)
+
+};
+
+function updateBarChart(selected_id) {
+
+    // Setting the variables.
     sample_values = selected_id.sample_values.slice(0,10);
     sample_values.reverse();
     otu_ids = selected_id.otu_ids.slice(0,10);
@@ -96,34 +108,23 @@ function optionChanged(id) {
 
     otu_ids = otu_ids.map(id => `OTU ${id}`);
 
-    // Updating the Bar Chart
+    // Restyling the Plot.
     Plotly.restyle("bar", "x",[sample_values]);
     Plotly.restyle("bar", "y",[otu_ids]);
     Plotly.restyle("bar", "hovertext",[otu_labels]);
+};
 
-    // Updating the Bubble Chart
+function updateBubbleChart(selected_id) {
 
+    // Setting the variables.
     sample_values = selected_id.sample_values;
     otu_ids = selected_id.otu_ids;
     otu_labels = selected_id.otu_labels;
 
-    let trace2 = [{
-        x: otu_ids,
-        y: sample_values,
-        text: otu_labels,
-        mode: "markers",
-        marker: {
-            opacity: 0.75,
-            size: sample_values,
-            color: otu_ids,
-            sizeref: 1.3
-        }
-    }];
-
+    // Restyling the Plot.
     Plotly.restyle("bubble", "x", [otu_ids]);
     Plotly.restyle("bubble", "y", [sample_values]);
     Plotly.restyle("bubble", "text", [otu_labels]);
     Plotly.restyle("bubble", "size", [sample_values]);
-    Plotly.restyle("bubble", "color", [otu_ids]);
-
+    Plotly.restyle("bubble", "marker.color", [otu_ids]);
 };
