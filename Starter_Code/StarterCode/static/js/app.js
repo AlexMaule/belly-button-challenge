@@ -25,4 +25,18 @@ d3.json(url).then(function(data) {
     // console.log(otu_ids);
     // console.log(otu_labels);
 
+    // Default plot with the first id.
+    function init() {
+        let trace = [{
+            x: sample_values,
+            y: otu_ids,
+            hovertext: otu_labels,
+            type: "bar",
+            orientation: "h"
+        }];
+    
+        Plotly.newPlot("bar", trace);
+    };
+    
+    init();
 });
