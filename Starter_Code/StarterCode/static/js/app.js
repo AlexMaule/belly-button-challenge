@@ -35,6 +35,25 @@ d3.json(url).then(function(data) {
     
         Plotly.newPlot("bar", trace);
 
+        // Bubble Chart
+        sample_values = selected_id.sample_values;
+        otu_ids = selected_id.otu_ids;
+        otu_labels = selected_id.otu_labels;
+
+        let trace2 = [{
+            x: otu_ids,
+            y: sample_values,
+            text: otu_labels,
+            mode: "markers",
+            marker: {
+                opacity: 0.75,
+                size: sample_values,
+                color: otu_ids,
+                sizeref: 1.3
+            }
+        }];
+
+        Plotly.newPlot("bubble", trace2);
     };
 
     let items = [];
