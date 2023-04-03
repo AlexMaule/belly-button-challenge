@@ -21,8 +21,10 @@ d3.json(url).then(function(data) {
 
     otu_ids = otu_ids.map(id => `OTU ${id}`);
 
-    // Default plot with the first id.
+    // Default plots with the first id.
     function init() {
+
+        // Bar chart
         let trace = [{
             x: sample_values,
             y: otu_ids,
@@ -32,8 +34,20 @@ d3.json(url).then(function(data) {
         }];
     
         Plotly.newPlot("bar", trace);
+
     };
 
+    let items = [];
+    for (let i=0; i<samples.length; i++) {
+        items.push(samples[i].id)
+    };
+
+    let dropdown = d3.select("select");
+
+    for (let i = 0; i < items.length; i++) {
+        dropdown.append("option").text(items[i]);
+    };
+    
     init();
 });
 
