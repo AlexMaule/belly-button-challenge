@@ -53,7 +53,13 @@ d3.json(url).then(function(data) {
             }
         }];
 
-        Plotly.newPlot("bubble", trace2);
+        let layout = {
+            xaxis: {
+                title: "OTU ID"
+            }
+        }
+
+        Plotly.newPlot("bubble", trace2, layout);
     };
 
     let items = [];
@@ -90,12 +96,34 @@ function optionChanged(id) {
 
     otu_ids = otu_ids.map(id => `OTU ${id}`);
 
-    console.log(sample_values);
-    console.log(otu_ids);
-    console.log(otu_labels);
-
+    // Updating the Bar Chart
     Plotly.restyle("bar", "x",[sample_values]);
     Plotly.restyle("bar", "y",[otu_ids]);
     Plotly.restyle("bar", "hovertext",[otu_labels]);
+
+    // Updating the Bubble Chart
+
+    sample_values = selected_id.sample_values;
+    otu_ids = selected_id.otu_ids;
+    otu_labels = selected_id.otu_labels;
+
+    let trace2 = [{
+        x: otu_ids,
+        y: sample_values,
+        text: otu_labels,
+        mode: "markers",
+        marker: {
+            opacity: 0.75,
+            size: sample_values,
+            color: otu_ids,
+            sizeref: 1.3
+        }
+    }];
+
+    Plotly.restyle("bubble", "x", [otu_ids]);
+    Plotly.restyle("bubble", "y", [sample_values]);
+    Plotly.restyle("bubble", "text", [otu_labels]);
+    Plotly.restyle("bubble", "size", [sample_values]);
+    Plotly.restyle("bubble", "color", [otu_ids]);
 
 };
