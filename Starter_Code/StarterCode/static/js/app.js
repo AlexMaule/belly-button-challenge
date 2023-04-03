@@ -21,10 +21,6 @@ d3.json(url).then(function(data) {
 
     otu_ids = otu_ids.map(id => `OTU ${id}`);
 
-    // console.log(sample_values);
-    // console.log(otu_ids);
-    // console.log(otu_labels);
-
     // Default plot with the first id.
     function init() {
         let trace = [{
@@ -37,6 +33,36 @@ d3.json(url).then(function(data) {
     
         Plotly.newPlot("bar", trace);
     };
-    
+
     init();
 });
+
+
+function optionChanged(id) {
+
+    for (let i=0; i<samples.length; i++) {
+        if (String(samples[i].id) == id) {
+            selected_id = samples[i];
+        }
+    };
+
+    console.log(selected_id);
+
+    sample_values = selected_id.sample_values.slice(0,10);
+    sample_values.reverse();
+    otu_ids = selected_id.otu_ids.slice(0,10);
+    otu_ids.reverse();
+    otu_labels = selected_id.otu_labels.slice(0,10);
+    otu_labels.reverse();
+
+    otu_ids = otu_ids.map(id => `OTU ${id}`);
+
+    console.log(sample_values);
+    console.log(otu_ids);
+    console.log(otu_labels);
+
+    Plotly.restyle("bar", "x",[sample_values]);
+    Plotly.restyle("bar", "y",[otu_ids]);
+    Plotly.restyle("bar", "hovertext",[otu_labels]);
+
+};
