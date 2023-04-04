@@ -1,5 +1,6 @@
 const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
 
+// creating variables for the relevant datasets.
 let samples;
 let metadata;
 
@@ -57,17 +58,20 @@ d3.json(url).then(function(data) {
             }
         }];
 
+        // Adding a title for the Bubble X-axis
         let layout = {
             xaxis: {
                 title: "OTU ID"
             }
         }
 
+        // Ploting the Bubble chart
         Plotly.newPlot("bubble", trace2, layout);
 
         // Metadata table
         let table = d3.select("#sample-metadata");
 
+        // Creating rows in the Metadata Info table with ids for updating.
         let row0 = table.append("tr").attr("id","id");
         let row1 = table.append("tr").attr("id","ethnicity");
         let row2 = table.append("tr").attr("id","gender");
@@ -76,6 +80,7 @@ d3.json(url).then(function(data) {
         let row5 = table.append("tr").attr("id","bbtype");
         let row6 = table.append("tr").attr("id","wfreq");
 
+        // inserting the initial values for the first id in the dataset.
         row0.text(`id: ${metadata[0].id}`);
         row1.text(`ethnicity: ${metadata[0].ethnicity}`);
         row2.text(`gender: ${metadata[0].gender}`);
@@ -101,7 +106,7 @@ d3.json(url).then(function(data) {
     init();
 });
 
-
+// Function for changing the ID and the visualizations.
 function optionChanged(id) {
 
     for (let i=0; i<samples.length; i++) {
