@@ -22,7 +22,7 @@ d3.json(url).then(function(data) {
     let otu_labels = selected_id.otu_labels.slice(0,10);
     otu_labels.reverse();
 
-    otu_ids = otu_ids.map(id => `OTU ${id}`);
+    otu_ids = otu_ids.map(id => `OTU ${id} `);
 
     // Default plots with the first id.
     function init() {
@@ -68,17 +68,25 @@ d3.json(url).then(function(data) {
         // Metadata table
         let table = d3.select("#sample-metadata");
 
-        // let row = table.append("tr");
+        let row0 = table.append("tr").attr("id","id");
+        let row1 = table.append("tr").attr("id","ethnicity");
+        let row2 = table.append("tr").attr("id","gender");
+        let row3 = table.append("tr").attr("id","age");
+        let row4 = table.append("tr").attr("id","location");
+        let row5 = table.append("tr").attr("id","bbtype");
+        let row6 = table.append("tr").attr("id","wfreq");
 
-        table.append("tr").append("td").text(`id: ${metadata[0].id}`);
-        table.append("tr").append("td").text(`ethnicity: ${metadata[0].ethnicity}`);
-        table.append("tr").append("td").text(`gender: ${metadata[0].gender}`);
-        table.append("tr").append("td").text(`age: ${metadata[0].age}`);
-        table.append("tr").append("td").text(`location: ${metadata[0].location}`);
-        table.append("tr").append("td").text(`bbtype: ${metadata[0].bbtype}`);
-        table.append("tr").append("td").text(`wfreq: ${metadata[0].wfreq}`);
+        row0.text(`id: ${metadata[0].id}`);
+        row1.text(`ethnicity: ${metadata[0].ethnicity}`);
+        row2.text(`gender: ${metadata[0].gender}`);
+        row3.text(`age: ${metadata[0].age}`);
+        row4.text(`location: ${metadata[0].location}`);
+        row5.text(`bbtype: ${metadata[0].bbtype}`);
+        row6.text(`wfreq: ${metadata[0].wfreq}`);
+    
     };
 
+    // Adding the ids to the dropdown
     let items = [];
     for (let i=0; i<samples.length; i++) {
         items.push(samples[i].id)
@@ -110,6 +118,10 @@ function optionChanged(id) {
 
     updateBubbleChart(selected_id)
 
+    // Updating the Metadata Chart
+
+    updateMetadata(id)
+
 };
 
 function updateBarChart(selected_id) {
@@ -122,7 +134,7 @@ function updateBarChart(selected_id) {
     otu_labels = selected_id.otu_labels.slice(0,10);
     otu_labels.reverse();
 
-    otu_ids = otu_ids.map(id => `OTU ${id}`);
+    otu_ids = otu_ids.map(id => `OTU ${id} `);
 
     // Restyling the Plot.
     Plotly.restyle("bar", "x",[sample_values]);
@@ -143,4 +155,23 @@ function updateBubbleChart(selected_id) {
     Plotly.restyle("bubble", "text", [otu_labels]);
     Plotly.restyle("bubble", "size", [sample_values]);
     Plotly.restyle("bubble", "marker.color", [otu_ids]);
+};
+
+function updateMetadata(id) {
+    
+    // Loop through the metadata to find the specific id.
+    for (let j=0; j<metadata.length; j++) {
+        if (metadata[j].id == id) {
+            selected_metadata = metadata[j];
+        }
+    };
+
+    // Update Metadata Info
+    d3.select("#id").text(`id: ${selected_metadata.id}`);
+    d3.select("#ethnicity").text(`ethnicity: ${selected_metadata.ethnicity}`);
+    d3.select("#gender").text(`gender: ${selected_metadata.gender}`);
+    d3.select("#age").text(`age: ${selected_metadata.age}`);
+    d3.select("#location").text(`location: ${selected_metadata.location}`);
+    d3.select("#bbtype").text(`bbtype: ${selected_metadata.bbtype}`);
+    d3.select("#wfreq").text(`wfreq: ${selected_metadata.wfreq}`);
 };
