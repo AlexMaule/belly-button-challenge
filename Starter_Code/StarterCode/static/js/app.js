@@ -1,12 +1,15 @@
 const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json";
 
 let samples;
+let metadata;
 
 // Promise Pending
 d3.json(url).then(function(data) {
 
     samples = data.samples;
+    metadata = data.metadata
     console.log("data: ",data);
+
 
     // d3.selectAll("#selDataset").on("change",getData);
 
@@ -61,6 +64,19 @@ d3.json(url).then(function(data) {
         }
 
         Plotly.newPlot("bubble", trace2, layout);
+
+        // Metadata table
+        let table = d3.select("#sample-metadata");
+
+        // let row = table.append("tr");
+
+        table.append("tr").append("td").text(`id: ${metadata[0].id}`);
+        table.append("tr").append("td").text(`ethnicity: ${metadata[0].ethnicity}`);
+        table.append("tr").append("td").text(`gender: ${metadata[0].gender}`);
+        table.append("tr").append("td").text(`age: ${metadata[0].age}`);
+        table.append("tr").append("td").text(`location: ${metadata[0].location}`);
+        table.append("tr").append("td").text(`bbtype: ${metadata[0].bbtype}`);
+        table.append("tr").append("td").text(`wfreq: ${metadata[0].wfreq}`);
     };
 
     let items = [];
