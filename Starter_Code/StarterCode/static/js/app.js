@@ -92,27 +92,6 @@ d3.json(url).then(function(data) {
         row6.text(`wfreq: ${metadata[0].wfreq}`);
 
         // Plotting the Gauge Chart
-        let trace3 = [{
-            value : metadata[0].wfreq,
-            ids: ["0-1","1-2","2-3","3-4","4-5","5-6","6-7","7-8","8-9"],
-            direction: "clockwise",
-            textinfo: "text",
-            textposition: "inside",
-            title: {text: `Scrubs per Week`}, // <h1>Belly Button Washing Frequency</h1> <h> <h3>Scrubs per Week</h3>
-            type: "indicator",
-            mode: "gauge",
-            gauge:{
-                axis:{range:[0,9]},
-                steps: [
-                    {range: [0,1], color: "white"},
-                    {range: [1,9], color: "cyan"}
-                ],
-                ticklabelstep: 1,
-                ticks: "outside"
-            },
-            labels: ["0-1","1-2","2-3","3-4","4-5","5-6","6-7","7-8","8-9"]
-        }];
-
         let trace4 = [{
             type: "indicator",
             mode: "gauge",
@@ -146,20 +125,10 @@ d3.json(url).then(function(data) {
         let layout3 = {
             title: {
                 text: "<b>Belly Button Washing Frequency</b>",
-                yanchor: "top"
-            },
-            annotations: [{
-                xanchor: "center",
-                yanchor:"bottom",
-                yshift: -100,
-                showarrow:true,
-                arrowcolor: "red",
-                arrowsize: 1,
-                arrowhead: 3,
-                valign: "bottom"
-            }]
+                font:{size: 24}
+            }
         };
-        Plotly.newPlot('gauge',trace4);
+        Plotly.newPlot('gauge',trace4, layout3);
 
     };
 
@@ -233,7 +202,7 @@ function updateBubbleChart(selected_id) {
     Plotly.restyle("bubble", "x", [otu_ids]);
     Plotly.restyle("bubble", "y", [sample_values]);
     Plotly.restyle("bubble", "text", [otu_labels]);
-    Plotly.restyle("bubble", "size", [sample_values]);
+    Plotly.restyle("bubble", "marker.size", [sample_values]);
     Plotly.restyle("bubble", "marker.color", [otu_ids]);
 };
 
