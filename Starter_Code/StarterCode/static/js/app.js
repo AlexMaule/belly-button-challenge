@@ -3,16 +3,18 @@ const url = "https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/
 // creating variables for the relevant datasets.
 let samples;
 let metadata;
+let names;
 
 // Promise Pending
 d3.json(url).then(function(data) {
 
+    // assigning Samples, Metadata, and Names.
     samples = data.samples;
-    metadata = data.metadata
-    console.log("data: ",data);
-
-
-    // d3.selectAll("#selDataset").on("change",getData);
+    metadata = data.metadata;
+    names = data.names;
+    
+    console.log("Samples: ",samples);
+    console.log("metadata: ",metadata);
 
     let selected_id = samples[0];
 
@@ -65,7 +67,7 @@ d3.json(url).then(function(data) {
             }
         }
 
-        // Ploting the Bubble chart
+        // Plotting the Bubble chart
         Plotly.newPlot("bubble", trace2, layout);
 
         // Metadata table
@@ -88,25 +90,92 @@ d3.json(url).then(function(data) {
         row4.text(`location: ${metadata[0].location}`);
         row5.text(`bbtype: ${metadata[0].bbtype}`);
         row6.text(`wfreq: ${metadata[0].wfreq}`);
-    
+
+        // Plotting the Gauge Chart
+        let trace3 = [{
+            value : metadata[0].wfreq,
+            ids: ["0-1","1-2","2-3","3-4","4-5","5-6","6-7","7-8","8-9"],
+            direction: "clockwise",
+            textinfo: "text",
+            textposition: "inside",
+            title: {text: `Scrubs per Week`}, // <h1>Belly Button Washing Frequency</h1> <h> <h3>Scrubs per Week</h3>
+            type: "indicator",
+            mode: "gauge",
+            gauge:{
+                axis:{range:[0,9]},
+                steps: [
+                    {range: [0,1], color: "white"},
+                    {range: [1,9], color: "cyan"}
+                ],
+                ticklabelstep: 1,
+                ticks: "outside"
+            },
+            labels: ["0-1","1-2","2-3","3-4","4-5","5-6","6-7","7-8","8-9"]
+        }];
+
+        let trace4 = [{
+            type: "indicator",
+            mode: "gauge",
+            value : metadata[0].wfreq,
+            title: {text: "Scrubs per Week"},
+            gauge:{
+                axis:{
+                    range:[0,9],
+                    ticks: "",
+                    ticktext: ["1","2","3","4","5","6","7","8","9"],
+                    tickvals: [1,2,3,4,5,6,7,8,9],
+                    
+                },
+                bar: {color:"#D2691E"},
+                steps: [
+                    {range: [0,1], color: "#ebfaeb"},
+                    {range: [1,2], color: "#d6f5d6"},
+                    {range: [2,3], color: "#adebad"},
+                    {range: [3,4], color: "#85e085"},
+                    {range: [4,5], color: "#70db70"},
+                    {range: [5,6], color: "#47d147"},
+                    {range: [6,7], color: "#2eb82e"},
+                    {range: [7,8], color: "#248f24"},
+                    {range: [8,9], color: "#196619"},
+                ],
+                
+            },
+            
+        }];
+
+        let layout3 = {
+            title: {
+                text: "<b>Belly Button Washing Frequency</b>",
+                yanchor: "top"
+            },
+            annotations: [{
+                xanchor: "center",
+                yanchor:"bottom",
+                yshift: -100,
+                showarrow:true,
+                arrowcolor: "red",
+                arrowsize: 1,
+                arrowhead: 3,
+                valign: "bottom"
+            }]
+        };
+        Plotly.newPlot('gauge',trace4);
+
     };
 
     // Adding the ids to the dropdown
-    let items = [];
-    for (let i=0; i<samples.length; i++) {
-        items.push(samples[i].id)
-    };
-
     let dropdown = d3.select("select");
 
-    for (let i = 0; i < items.length; i++) {
-        dropdown.append("option").text(items[i]);
+    for (let i = 0; i < names.length; i++) {
+        dropdown.append("option").text(names[i]);
     };
     
     init();
 });
 
+//------------------------------------------------------------------------------------------------------------------------------
 // Function for changing the ID and the visualizations.
+
 function optionChanged(id) {
 
     for (let i=0; i<samples.length; i++) {
@@ -121,13 +190,16 @@ function optionChanged(id) {
 
     // Updating the Bubble Chart
 
-    updateBubbleChart(selected_id)
+    updateBubbleChart(selected_id);
 
-    // Updating the Metadata Chart
+    // Updating the Metadata Info and Gauge Chart
 
-    updateMetadata(id)
+    updateMetadataAndGauge(id);
 
 };
+
+//------------------------------------------------------------------------------------------------------------------------------
+// Function to Update Bar Chart.
 
 function updateBarChart(selected_id) {
 
@@ -147,6 +219,9 @@ function updateBarChart(selected_id) {
     Plotly.restyle("bar", "hovertext",[otu_labels]);
 };
 
+//------------------------------------------------------------------------------------------------------------------------------
+// Function to Update Bubble Chart.
+
 function updateBubbleChart(selected_id) {
 
     // Setting the variables.
@@ -162,7 +237,10 @@ function updateBubbleChart(selected_id) {
     Plotly.restyle("bubble", "marker.color", [otu_ids]);
 };
 
-function updateMetadata(id) {
+//------------------------------------------------------------------------------------------------------------------------------
+// Function to Update the Metadata Info.
+
+function updateMetadataAndGauge(id) {
     
     // Loop through the metadata to find the specific id.
     for (let j=0; j<metadata.length; j++) {
@@ -179,4 +257,9 @@ function updateMetadata(id) {
     d3.select("#location").text(`location: ${selected_metadata.location}`);
     d3.select("#bbtype").text(`bbtype: ${selected_metadata.bbtype}`);
     d3.select("#wfreq").text(`wfreq: ${selected_metadata.wfreq}`);
+
+    // Update Gauge info
+    Plotly.restyle("gauge","value", selected_metadata.wfreq)
 };
+
+//------------------------------------------------------------------------------------------------------------------------------
