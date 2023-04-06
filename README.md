@@ -35,7 +35,7 @@ This visualization shows the ids and values of the 10 largest values of bacteria
 ### Scrubs per Week
 Number of times the participant wash their belly button per week.
 
-![gauge](https://user-images.githubusercontent.com/108903118/230401790-23ea90ce-283b-43fb-b592-49588aa6bcd1.png)
+![gauge](https://user-images.githubusercontent.com/108903118/230406967-dfd54edb-8346-45ea-85c4-7e145533ee1e.png)
 
 ### Bubble Graph
 Shows the sample value of each bacteria by id.
