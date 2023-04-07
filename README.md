@@ -1,8 +1,10 @@
-# belly-button-challenge
+# Belly Button Dashboard
 
 Build an interactive dashboard which catalogs the microbes that colonize the human navels.
 
-# Data
+[Dashboard Website](https://alexmaule.github.io/belly-button-challenge/Starter_Code/StarterCode/)
+
+## Data
 The data was collected to study what different types of bacteria was found in the belly button.
 The data is devided into 3 arrays: name, samples, and metadata.
  - name: ids of all the 153 participants.
@@ -20,7 +22,7 @@ The data is devided into 3 arrays: name, samples, and metadata.
     * bbtype
     * wfreq
 
-# Visualization
+## Visualization
 There are 4 visualizations in the website.
  
 ### Metadata Info
@@ -41,5 +43,5 @@ Number of times the participant wash their belly button per week.
 Shows the sample value of each bacteria by id.
 ![bubble](https://user-images.githubusercontent.com/108903118/230402339-65a92204-e51f-4194-8e45-12403bb7c18f.png)
 
-# Reference
+## Reference
 http://robdunnlab.com/projects/belly-button-biodiversity/results-and-data/
